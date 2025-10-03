@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Profile - MediAssist</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="{{ url_for('index') }}">MediAssist</a></h1>
+            <div class="user-info">
+                <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-outline">Back to Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="patient-profile">
+            <h2>
+                {% if patient_data.personal_info.name %}
+                    {{ patient_data.personal_info.name }}
+                {% else %}
+                    {{ patient_username }}
+                {% endif %}
+            </h2>
+            <p><strong>Username:</strong> {{ patient_username }}</p>
+            
+            <div class="profile-sections">
+                <div class="profile-section">
+                    <h3>Personal Information</h3>
+                    <div class="info-grid">
+                        {% if patient_data.personal_info.age %}
+                            <div class="info-item">
+                                <strong>Age:</strong> {{ patient_data.personal_info.age }}
+                            </div>
+                        {% endif %}
+                        {% if patient_data.personal_info.gender %}
+                            <div class="info-item">
+                                <strong>Gender:</strong> {{ patient_data.personal_info.gender|title }}
+                            </div>
+                        {% endif %}
+                        {% if patient_data.personal_info.blood_group %}
+                            <div class="info-item">
+                                <strong>Blood Group:</strong> {{ patient_data.personal_info.blood_group }}
+                            </div>
+                        {% endif %}
+                        {% if patient_data.personal_info.contact %}
+                            <div class="info-item">
+                                <strong>Contact:</strong> {{ patient_data.personal_info.contact }}
+                            </div>
+                        {% endif %}
+                        {% if patient_data.personal_info.address %}
+                            <div class="info-item full-width">
+                                <strong>Address:</strong> {{ patient_data.personal_info.address }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if patient_data.personal_info.medical_history %}
+                <div class="profile-section">
+                    <h3>Medical History</h3>
+                    <p>{{ patient_data.personal_info.medical_history }}</p>
+                </div>
+                {% endif %}
+                
+                {% if patient_data.personal_info.allergies %}
+                <div class="profile-section">
+                    <h3>Allergies</h3>
+                    <p>{{ patient_data.personal_info.allergies }}</p>
+                </div>
+                {% endif %}
+                
+                {% if patient_data.personal_info.current_medications %}
+                <div class="profile-section">
+                    <h3>Current Medications</h3>
+                    <p>{{ patient_data.personal_info.current_medications }}</p>
+                </div>
+                {% endif %}
+                
+                {% if patient_data.reports %}
+                <div class="profile-section">
+                    <h3>Medical Reports</h3>
+                    <div class="reports-list">
+                        {% for report in patient_data.reports %}
+                            <div class="report-card">
+                                <div class="report-info">
+                                    <h4>{{ report.report_type|title }}</h4>
+                                    <p><strong>File:</strong> {{ report.filename }}</p>
+                                    <p><strong>Uploaded:</strong> {{ report.upload_date }}</p>
+                                    {% if report.notes %}
+                                        <p><strong>Notes:</strong> {{ report.notes }}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="report-actions">
+                                    <a href="{{ url_for('download_report', patient_username=patient_username, filename=report.filename) }}" class="btn btn-primary">Download</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

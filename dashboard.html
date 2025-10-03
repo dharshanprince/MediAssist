@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediAssist - Medical Data Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>MediAssist</h1>
+            <p>Your Digital Medical Companion</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h2>Secure Medical Data Management</h2>
+            <p>Store, manage, and access your medical records anytime, anywhere</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+                <a href="{{ url_for('signup') }}" class="btn btn-secondary">Sign Up</a>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <h3>For Patients</h3>
+                <p>Store your medical history, upload reports, and maintain your health records securely</p>
+            </div>
+            <div class="feature-card">
+                <h3>For Doctors</h3>
+                <p>Access patient records, review medical history, and provide better care</p>
+            </div>
+            <div class="feature-card">
+                <h3>Mobile Friendly</h3>
+                <p>Access your medical data on any device, anytime you need it</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 MediAssist. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

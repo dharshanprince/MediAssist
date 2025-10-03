@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard - MediAssist</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="{{ url_for('index') }}">MediAssist</a></h1>
+            <div class="user-info">
+                <span>Welcome, Dr. {{ username }}</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>Patient Records</h2>
+        
+        <div class="search-container">
+            <form method="GET" action="{{ url_for('doctor_dashboard') }}">
+                <input type="text" name="search" placeholder="Search patients by name or username" value="{{ search_query }}">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+        
+        {% if patients %}
+            <div class="patients-list">
+                {% for patient_username, patient_data in patients.items() %}
+                    <div class="patient-card">
+                        <div class="patient-info">
+                            <h3>
+                                {% if patient_data.personal_info.name %}
+                                    {{ patient_data.personal_info.name }}
+                                {% else %}
+                                    {{ patient_username }}
+                                {% endif %}
+                            </h3>
+                            <p><strong>Username:</strong> {{ patient_username }}</p>
+                            {% if patient_data.personal_info.age %}
+                                <p><strong>Age:</strong> {{ patient_data.personal_info.age }}</p>
+                            {% endif %}
+                            {% if patient_data.personal_info.gender %}
+                                <p><strong>Gender:</strong> {{ patient_data.personal_info.gender|title }}</p>
+                            {% endif %}
+                            {% if patient_data.personal_info.blood_group %}
+                                <p><strong>Blood Group:</strong> {{ patient_data.personal_info.blood_group }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="patient-actions">
+                            <a href="{{ url_for('view_patient', patient_username=patient_username) }}" class="btn btn-primary">View Full Profile</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No patients found{% if search_query %} matching "{{ search_query }}"{% endif %}.</p>
+        {% endif %}
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
